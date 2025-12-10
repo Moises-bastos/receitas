@@ -1,0 +1,7 @@
+{
+  "title": "Pavê de chocolate",
+  "description": "Camadas de biscoito e creme",
+  "ingredients": ["biscoito", "creme", "chocolate"],
+  "steps": ["misturar", "montar", "gelar"],
+  "categoryId": "aac4deea-1315-4910-beb0-d9cb2da31f93"
+}
