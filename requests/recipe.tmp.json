@@ -7,5 +7,5 @@
     { "name": "chocolate", "quantity": 100, "unit": "g" }
   ],
   "steps": ["misturar", "montar", "gelar"],
-  "categoryId": "aac4deea-1315-4910-beb0-d9cb2da31f93"
+  "categoryId": "1de3de75-1f03-419e-ad86-d803d296ea17"
 }

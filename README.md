@@ -81,7 +81,7 @@ Ingredientes
 Receitas
 - `GET /recipes?categoryId=&search=` — lista com filtros
 - `GET /recipes/:id` — detalhe
-- `POST /recipes` — cria `{ title, description?, ingredients[], steps[], categoryId }`
+- `POST /recipes` — cria `{ title, description?, ingredients: [{ name, quantity, unit }], steps[], categoryId }`
 - `PUT /recipes/:id` — atualiza parcial dos mesmos campos
 - `DELETE /recipes/:id` — remove
 
@@ -107,7 +107,11 @@ Códigos de erro: as validações retornam `400` com `{ error: "mensagem" }` (mi
       {
         "title": "Pavê de chocolate",
         "description": "Camadas de biscoito e creme",
-        "ingredients": ["biscoito", "creme", "chocolate"],
+        "ingredients": [
+          { "name": "biscoito", "quantity": 200, "unit": "g" },
+          { "name": "creme", "quantity": 300, "unit": "ml" },
+          { "name": "chocolate", "quantity": 100, "unit": "g" }
+        ],
         "steps": ["misturar", "montar", "gelar"],
         "categoryId": "<ID_DA_CATEGORIA>"
       }

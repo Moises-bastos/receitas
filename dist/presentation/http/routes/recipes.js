@@ -31,7 +31,11 @@ function recipesRoutes(service) {
                 title: String(req.body.title ?? ""),
                 description: req.body.description,
                 ingredients: Array.isArray(req.body.ingredients)
-                    ? req.body.ingredients.map(String)
+                    ? req.body.ingredients.map((i) => ({
+                        name: String(i?.name ?? ""),
+                        quantity: Number(i?.quantity ?? 0),
+                        unit: String(i?.unit ?? ""),
+                    }))
                     : [],
                 steps: Array.isArray(req.body.steps) ? req.body.steps.map(String) : [],
                 categoryId: String(req.body.categoryId ?? ""),
