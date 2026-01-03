@@ -6,6 +6,31 @@ import { IngredientService } from "./IngredientService.js"
 import { IRecipeService } from "./interfaces/IRecipeService.js"
 
 export class RecipeService implements IRecipeService {
+  async scaleRecipe(recipeId: string, desiredServings: number) {
+  if (!(desiredServings > 0)) {
+    throw new Error("Desired servings must be greater than 0")
+  }
+
+  const recipe = store.recipes.find(r => r.id === recipeId)
+  if (!recipe) {
+    throw new Error("Recipe not found")
+  }
+
+  const factor = desiredServings / recipe.servings
+
+  return {
+    id: recipe.id,
+    title: recipe.title,
+    description: recipe.description,
+    servings: desiredServings,
+    ingredients: recipe.ingredients.map(ingredient => ({
+      ingredientId: ingredient.ingredientId,
+      unit: ingredient.unit,
+      quantity: ingredient.quantity * factor
+    }))
+  }
+}
+
   private categoryService = new CategoryService()
   private ingredientService = new IngredientService()
 
@@ -21,7 +46,8 @@ export class RecipeService implements IRecipeService {
       }
     }
 
-    let items = [...store.recipes]
+    let items = store.recipes.filter(r => r.status === 'published')
+
     
     if (categoryId) {
       items = items.filter(r => r.categoryId === categoryId)
@@ -95,6 +121,7 @@ export class RecipeService implements IRecipeService {
       steps,
       servings,
       categoryId: input.categoryId,
+        status: 'draft',
       createdAt: new Date(),
     }
     store.recipes.push(recipe)
@@ -105,6 +132,10 @@ export class RecipeService implements IRecipeService {
     const idx = store.recipes.findIndex(r => r.id === id)
     if (idx < 0) throw new Error("Recipe not found")
     const current = store.recipes[idx]
+  if (current.status === 'archived') {
+  throw new Error("Archived recipes cannot be edited")
+}
+
 
     const updated = { ...current }
 
@@ -162,10 +193,17 @@ export class RecipeService implements IRecipeService {
     return updated
   }
 
-  async delete(id: string): Promise<void> {
-    const idx = store.recipes.findIndex(r => r.id === id)
-    if (idx >= 0) {
-      store.recipes.splice(idx, 1)
-    }
+ async delete(id: string): Promise<void> {
+  const idx = store.recipes.findIndex(r => r.id === id)
+  if (idx < 0) return
+
+  const recipe = store.recipes[idx]
+
+  if (recipe.status === 'published') {
+    throw new Error("Published recipes cannot be deleted")
   }
+
+  store.recipes.splice(idx, 1)
+}
+
 }

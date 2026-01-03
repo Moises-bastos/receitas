@@ -1,3 +1,5 @@
+export type RecipeStatus = 'draft' | 'published' | 'archived'
+
 export type Category = {
   id: string
   name: string
@@ -18,6 +20,7 @@ export type Recipe = {
   steps: string[]
   servings: number
   categoryId: string
+   status: RecipeStatus 
   createdAt: Date
 }
 
